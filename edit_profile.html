@@ -20,8 +20,26 @@
                 <input type="date" id="birthday" value="2003-01-01" placeholder="Birthday" />
 
   
+                <!-- Gender section -->
+                <div class="gender-container">
+                    <label>Gender:</label>
+                    <div class="gender-options">
+                        <label>
+                            <input type="radio" name="gender" value="Male" /> Male
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="Female" checked /> Female
+                        </label>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit">Save Changes</button>
+                    <button type="button" onclick="location.href='view_profile.html'">Cancel</button>
+                </div>
             </form>
         </div>
     </div>
+
 </body>
 </html>
