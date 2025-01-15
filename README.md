@@ -41,3 +41,33 @@ The University Student Payroll Management System is designed to help students ma
 - **Network**: Internet connection for downloading software and dependencies
 
 
+
+
+## Usage
+
+- Open your web browser and go to `http://localhost/university-student-payroll-management-system`.
+- Log in using your university ID and password.
+- Use the dashboard to manage your finances.
+
+## Contributing
+
+Contributions are welcome! Please follow these steps to contribute:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes and commit them (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Open a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Authors
+
+- Wejdan Muflih Al-sulami
+- Ghala Mansour AI-otaibi
+- Maya Atif Felemban
+- Shooq Hussain Alkhuzaie
+
+
