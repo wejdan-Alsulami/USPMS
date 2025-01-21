@@ -260,3 +260,37 @@ input {
 .gender-container input[type="radio"] {
     margin-right: 5px; /* Space between radio button and label text */
 }
+
+
+/* In your style.css */
+
+.alert {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    display: none; /* Initially hidden */
+    animation: slideDown 0.5s ease-out forwards;
+}
+
+@keyframes slideDown {
+    from {
+        top: -50px;
+    }
+    to {
+        top: 0;
+    }
+}
+
+.alert.error {
+    background-color: #f44336; /* Red for errors */
+}
+
+.alert.success {
+    background-color: #4CAF50; /* Green for success */
+}
