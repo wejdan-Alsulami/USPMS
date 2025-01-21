@@ -99,3 +99,33 @@ button:hover {
 .gender-container input[type="radio"]:checked {
     accent-color: #004aad;
 }
+
+
+
+ /* Balance container styles */
+ .balance-container {
+    display: flex; /* Use flexbox layout */
+    align-items: center; /* Center items vertically */
+    gap: 15px; /* Space between items */
+    padding: 10px; /* Padding around the container */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+    margin-top: 20px; /* Space from the top */
+}
+
+.balance-content {
+    display: flex; /* Use flexbox for inner content */
+    flex-direction: column; /* Stack items vertically */
+}
+
+.balance-content label {
+    font-size: 16px; /* Font size for the label */
+    color: #333; /* Text color */
+    font-weight: bold; /* Bold font for the label */
+}
+
+.balance-amount {
+    font-size: 24px; /* Larger font for the amount */
+    color: #28a745; /* Green color for positive balance */
+    margin-top: 5px; /* Space above the amount */
+}
