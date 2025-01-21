@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['student_id'])) {
+    header("Location: index.php"); // Redirect to login if not logged in
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,17 +22,18 @@
         <div class="profile-container" id="profileContainer">
             <h1>Student Profile</h1>
             <div class="profile-info">
-                <p><b>Student ID:</b> 444002648</p>
-                <p><b>Name:</b> Maya Atif Felemban</p>
-                <p><b>Email:</b> mayafelemban55@gmail.com</p>
-                <p><b>Phone:</b> 5055418441 </p>
-                <p><b>Specialization:</b> Computer Science</p>
-                <p><b>Birthday:</b> 01/01/2003</p>
-                <p><b>Gender:</b> Female</p>
+                <p><b>Student ID:</b> <?php echo htmlspecialchars($_SESSION['student_id']); ?></p>
+                <p><b>Name:</b> <?php echo htmlspecialchars($_SESSION['student_name']); ?></p>
+                <p><b>Email:</b> <?php echo htmlspecialchars($_SESSION['email']); ?></p>
+                <p><b>Phone:</b> <?php echo htmlspecialchars($_SESSION['phone']); ?></p>
+                <p><b>Specialization:</b> <?php echo htmlspecialchars($_SESSION['specialization']); ?></p>
+                <p><b>Birthday:</b> <?php echo htmlspecialchars($_SESSION['birthday']); ?></p>
+                <p><b>Gender:</b> <?php echo htmlspecialchars($_SESSION['gender']); ?></p>
+                <p><b>Balance:</b> <?php echo htmlspecialchars(number_format($_SESSION['balance'], 2)); ?> SAR</p> <!-- Display Balance -->
             </div>
 
             <div class="button-container">
-                <button onclick="location.href='edit_profile.html'">Edit Profile</button>
+                <button onclick="location.href='edit_profile.php'">Edit Profile</button>
                 <button onclick="location.href='change_password.html'">Change Password</button>
             </div>
         </div>
