@@ -48,3 +48,21 @@ CREATE TABLE Expense (
 
 
 
+
+
+
+CREATE TABLE Goal (
+    goal_id INT NOT NULL AUTO_INCREMENT,          -- Unique identifier for each goal
+    student_id VARCHAR(10) NOT NULL,              -- Student ID associated with the goal
+    description TEXT NOT NULL,                     -- Description of the goal
+    target_amount DECIMAL(15, 2) NOT NULL,        -- Target amount for the goal
+    status ENUM('Pending', 'Achieved') NOT NULL DEFAULT 'Pending', -- Status of the goal
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Date the goal was created
+    PRIMARY KEY (goal_id),                         -- Primary key constraint
+    FOREIGN KEY (student_id) REFERENCES students(student_id) -- Foreign key reference to students table
+);
+
+
+
+
+
