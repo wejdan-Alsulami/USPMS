@@ -1,3 +1,46 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['student_id'])) {
+    header("Location: index.php"); // Redirect to login if not logged in
+    exit();
+}
+
+// Database connection
+include 'db_config.php'; // Include your database connection file
+
+$student_id = $_SESSION['student_id'];
+
+// Fetch the student's balance from the students table
+$query = "SELECT balance FROM students WHERE student_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $student_id);
+$stmt->execute();
+$stmt->bind_result($student_balance);
+$stmt->fetch();
+$stmt->close();
+
+// Fetch the student's savings goal target amount from the Goal table
+$query = "SELECT target_amount FROM Goal WHERE student_id = ? AND status = 'Pending'";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $student_id);
+$stmt->execute();
+$stmt->bind_result($target_amount);
+$stmt->fetch();
+$stmt->close();
+
+// Fetch the student's balance from the SavingsAccount table
+$query = "SELECT balance FROM savingsaccount WHERE student_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $student_id);
+$stmt->execute();
+$stmt->bind_result($savings_balance);
+$stmt->fetch();
+$stmt->close();
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +78,6 @@
             justify-content: flex-start;
         }
 
-        /* Animation for gradient effect */
         @keyframes waveAnimation {
             0% {
                 background-position: 0% 50%;
@@ -95,14 +137,12 @@
             border-radius: 5px;
         }
 
-        /* تغيير لون الأيقونات إلى اللون الكحلي */
         .sidebar ul li a i {
             margin-right: 15px;
             font-size: 20px;
             color: #003366; /* اللون الكحلي */
         }
 
-        /* Main Content */
         .content {
             margin-left: 250px;
             padding: 30px;
@@ -141,12 +181,17 @@
             color: #007bff;
         }
 
-        /* Chart Styles */
         .chart-container {
             width: 400px;
             height: 400px;
             margin: 20px auto;
         }
+
+
+        .highlight {
+            color: #dc3545; /* لون أحمر */
+            font-weight: bold; /* نص غامق */
+}
 
     </style>
 </head>
@@ -156,15 +201,15 @@
     <nav class="sidebar">
         <div class="sidebar-header">
             <img src="images/logo.png" alt="USPM Logo" class="logo">
-            <h2>University Student Payroll Management System</h2> <!-- النص بلون أحمر غامق -->
+            <h2>University Student Payroll Management System</h2>
         </div>
         <ul class="list-unstyled components">
-            <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="view_profile.html"><i class="fas fa-user"></i> Profile</a></li>
-            <li><a href="#"><i class="fas fa-wallet"></i> Account Balance</a></li>
-            <li><a href="#"><i class="fas fa-exchange-alt"></i> Expense</a></li>
-            <li><a href="#"><i class="fas fa-money-bill-wave"></i> Savings Account</a></li>
-            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li><a href="dashboard.php" class="active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="view_profile.php"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="manage_goals.php"><i class="fas fa-bullseye"></i> Goals</a></li>
+            <li><a href="manage_expenses.php"><i class="fas fa-exchange-alt"></i> Expense</a></li>
+            <li><a href="manage_savings_account.php"><i class="fas fa-money-bill-wave"></i> Savings Account</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </nav>
 
@@ -179,7 +224,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Account Balance</h5>
-                        <p class="card-text">1000 SAR</p>
+                        <p class="card-text"><?php echo htmlspecialchars($student_balance) . ' SAR'; ?></p>
                     </div>
                 </div>
             </div>
@@ -189,8 +234,8 @@
         <div class="chart-container">
             <canvas id="savingsGoalChart"></canvas>
         </div>
-        <p class="mt-3">Goal: Save 2000 SAR</p>
-        <p>Current Savings: 1000 SAR</p>
+        <p class="mt-3"><span class="highlight">Goal:</span> <?php echo htmlspecialchars($target_amount) . ' SAR'; ?></p>
+        <p><span class="highlight">Current Savings:</span> <?php echo htmlspecialchars($savings_balance) . ' SAR'; ?></p>
     </div>
 
     <!-- Scripts -->
@@ -204,7 +249,7 @@
                 labels: ['Current Savings', 'Remaining Goal'],
                 datasets: [{
                     label: 'Savings Progress',
-                    data: [1000, 1000], // Current savings and remaining goal
+                    data: [<?php echo htmlspecialchars($savings_balance); ?>, <?php echo htmlspecialchars($target_amount - $savings_balance); ?>],
                     backgroundColor: ['#007bff', '#e0e0e0'],
                     borderWidth: 1
                 }]
