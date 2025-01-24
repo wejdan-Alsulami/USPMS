@@ -64,5 +64,17 @@ CREATE TABLE Goal (
 
 
 
+CREATE TABLE SavingsAccount (
+    account_id INT NOT NULL AUTO_INCREMENT,  -- Unique identifier for each account
+    student_id VARCHAR(10) NOT NULL,         -- Student ID associated with the account
+    balance DECIMAL(15, 2) NOT NULL DEFAULT 0.00,  -- Current balance in the account
+    monthly_saving_goal DECIMAL(15, 2) DEFAULT NULL, -- Monthly saving goal
+    opening_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Date the account was opened
+    PRIMARY KEY (account_id),                -- Primary key constraint
+    UNIQUE (student_id),                     -- Ensure student_id is unique
+    FOREIGN KEY (student_id) REFERENCES students (student_id) -- Assuming you have a students table
+);
+
+
 
 
