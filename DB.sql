@@ -78,3 +78,54 @@ CREATE TABLE SavingsAccount (
 
 
 
+
+
+
+
+
+//////////////////////////////
+1. تشغيل جدولة الأحداث (Event Scheduler):
+
+
+SET GLOBAL event_scheduler = ON;
+
+
+
+2. إنشاء الحدث (Event):
+
+DELIMITER $$
+
+CREATE EVENT add_monthly_reward2
+ON SCHEDULE EVERY 1 MONTH -- يتم تكرار الحدث كل شهر
+STARTS (CURRENT_DATE + INTERVAL (27 - DAY(CURRENT_DATE)) DAY) -- يبدأ التنفيذ يوم 27 من الشهر الحالي
+DO
+BEGIN
+    UPDATE students
+    SET balance = balance + 990; -- تحديث رصيد جميع الطلاب بإضافة 990
+END$$
+
+DELIMITER ;
+
+
+3. عرض الأحداث للتأكد:
+
+SHOW EVENTS;
+
+
+
+
+
+-- for Test:
+
+DELIMITER $$
+
+CREATE EVENT add_monthly_reward2
+ON SCHEDULE EVERY 1 MONTH
+STARTS (CURRENT_DATE + INTERVAL (18 - DAY(CURRENT_DATE)) DAY) + INTERVAL '16:05' HOUR_MINUTE
+DO
+BEGIN
+    UPDATE students
+    SET balance = balance + 990;
+END$$
+
+DELIMITER ;
