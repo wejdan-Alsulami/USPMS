@@ -129,3 +129,64 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+******************************************
+
+1. خصم لكل طالب القيمة الموجودة ففي savincg account 
+DELIMITER $$
+
+CREATE EVENT DeductMonthlySavings
+ON SCHEDULE EVERY 1 MONTH
+STARTS '2025-01-27 06:00:00'
+DO
+BEGIN
+    -- تحديث رصيد الطلاب وحسابات الادخار
+    UPDATE students s
+    JOIN SavingsAccount sa ON s.student_id = sa.student_id
+    JOIN Goal g ON s.student_id = g.student_id
+    SET 
+        s.balance = s.balance - sa.monthly_saving_goal,  -- خصم من رصيد الطالب
+        sa.balance = sa.balance + sa.monthly_saving_goal -- إضافة إلى حساب الادخار
+    WHERE sa.monthly_saving_goal IS NOT NULL 
+      AND sa.monthly_saving_goal > 0
+      AND g.status != 'Achieved';
+END $$
+
+DELIMITER ;
+
+
+
+2. عرض الأحداث للتأكد:
+
+SHOW EVENTS;
+
+
+3. اختبار الحدث يدويًا:
+DELIMITER $$
+
+CREATE EVENT DeductMonthlySavings1
+ON SCHEDULE EVERY 1 MONTH
+STARTS '2025-01-18 17:20:00'
+DO
+BEGIN
+    -- تحديث رصيد الطلاب وحسابات الادخار
+    UPDATE students s
+    JOIN SavingsAccount sa ON s.student_id = sa.student_id
+    JOIN Goal g ON s.student_id = g.student_id
+    SET 
+        s.balance = s.balance - sa.monthly_saving_goal,  -- خصم من رصيد الطالب
+        sa.balance = sa.balance + sa.monthly_saving_goal -- إضافة إلى حساب الادخار
+    WHERE sa.monthly_saving_goal IS NOT NULL 
+      AND sa.monthly_saving_goal > 0
+      AND g.status != 'Achieved';
+END $$
+
+DELIMITER ;
+
+
+
+4. حذف 
+
+DROP EVENT DeductMonthlySavings1;
